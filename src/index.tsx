@@ -39,6 +39,7 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
   return (
     <Stack.Navigator
+      mode="modal"
       screenOptions={({ route }) => ({
         title: route.params && route.params.title,
       })}
