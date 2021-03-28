@@ -40,7 +40,7 @@ const StackNavigator = () => {
 
 const Index = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer onStateChange={newState => console.log(newState)}>
       <StackNavigator />
     </NavigationContainer>
   );
