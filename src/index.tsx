@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useNavigation, NavigationContainer, DrawerActions } from '@react-navigation/native';
+import { useNavigation, NavigationContainer, DrawerActions, TabRouter } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Main = () => {
@@ -13,7 +13,10 @@ const Main = () => {
       <Text>Main</Text>
       <TouchableOpacity
         onPress={() => {
-          dispatch(DrawerActions.openDrawer());
+          //dispatch(DrawerActions.openDrawer());
+          navigate('Sub', {
+            title: 'from Main',
+          });
         }}
       >
         <Text>open drawer</Text>
@@ -34,7 +37,11 @@ const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={({ route }) => ({
+        title: route.params && route.params.title,
+      })}
+    >
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen name="Sub" component={Sub} />
     </Stack.Navigator>
@@ -65,7 +72,7 @@ const DrawerNavigator = () => {
 const Index = () => {
   return (
     <NavigationContainer onStateChange={newState => console.log(newState)}>
-      <DrawerNavigator />
+      <StackNavigator />
     </NavigationContainer>
   );
 };
