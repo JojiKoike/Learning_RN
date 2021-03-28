@@ -1,4 +1,5 @@
 import React from 'react';
+import { CommonActions } from '@react-navigation/routers';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -15,11 +16,11 @@ const Main = () => {
         onPress={() => {
           //dispatch(DrawerActions.openDrawer());
           navigate('Sub', {
-            title: 'from Main',
+            title: `${Date.now()}`,
           });
         }}
       >
-        <Text>open drawer</Text>
+        <Text>go to sub</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,7 +44,37 @@ const StackNavigator = () => {
       })}
     >
       <Stack.Screen name="Main" component={Main} />
-      <Stack.Screen name="Sub" component={Sub} />
+      <Stack.Screen
+        name="Sub"
+        component={Sub}
+        options={({ navigation, route }) => {
+          const title = route.params && route.params.title ? route.params.title : '0';
+          const seed = parseInt(title, 10) % 3;
+          switch (seed) {
+            case 0:
+              console.log('goback');
+              navigation.goBack();
+              break;
+            case 1:
+              console.log('replace');
+              navigation.replace('Main');
+              break;
+            default:
+              console.log('reset');
+              const action = CommonActions.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'Main',
+                  },
+                ],
+              });
+              navigation.dispatch(action);
+              break;
+          }
+          return { title };
+        }}
+      />
     </Stack.Navigator>
   );
 };
