@@ -40,6 +40,7 @@ const StackNavigator = () => {
   return (
     <Stack.Navigator
       mode="modal"
+      headerMode="none"
       screenOptions={({ route }) => ({
         title: route.params && route.params.title,
       })}
